@@ -17,6 +17,7 @@ NGA (Next Generation Analytics) 是一个强大的数据分析平台，通过自
 ├── frontend/          # React前端应用
 └── backend/           # FastAPI后端服务
 ```
+后端依赖项目： https://github.com/new-bakery/nga-dify
 
 ## 技术栈
 
