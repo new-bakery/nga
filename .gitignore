@@ -1,0 +1,11 @@
+sql_app.db
+*.log
+app.log
+backend/app.log
+backend/.env.local
+backend/app.log
+backend/.env
+backend/.venv
+backend/.venv-3.12
+backend/__pycache__
+backend/sql_app.db

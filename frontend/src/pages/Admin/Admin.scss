@@ -1,0 +1,221 @@
+@use '../../styles/variables' as *;
+@use "sass:color";
+
+// Variables
+$sidebar-width: 260px;
+$header-height: 60px;
+$transition-speed: 0.3s;
+$sidebar-bg: $bg-main;
+$tab-active-bg: $primary-button;
+$tab-hover-bg: rgba($primary-button, 0.7);
+
+// Mixins
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin card-shadow {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+}
+
+.admin-container {
+  height: 100vh;
+  @include flex-column;
+
+  .admin-content {
+    display: flex;
+    height: calc(100vh - #{$header-height});
+    margin-top: $header-height;
+    background-color: $bg-lighter;
+    position: relative;
+  }
+
+  .admin-sidebar {
+    width: $sidebar-width;
+    background-color: $sidebar-bg;
+    padding: 1.5rem 1rem;
+    border-right: 1px solid $border-color;
+    transition: transform $transition-speed ease;
+    @include flex-column;
+    gap: 0.75rem;
+    @include card-shadow;
+    margin: 1rem 0 1rem 1rem;
+    border-radius: 12px;
+    height: calc(100% - 2rem);
+    overflow-y: auto;
+    
+    &::before {
+      content: "Admin Dashboard";
+      display: block;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: $text-primary;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba($border-color, 0.5);
+    }
+  }
+
+  .admin-tab {
+    width: 100%;
+    padding: 0.9rem 1.2rem;
+    background: none;
+    border: none;
+    color: $text-primary;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    transition: all $transition-speed;
+    position: relative;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 4px;
+      background-color: transparent;
+      transition: all $transition-speed;
+      border-radius: 0 2px 2px 0;
+    }
+
+    &:hover {
+      background-color: $tab-hover-bg;
+      color: white;
+      transform: translateX(4px);
+      
+      &::before {
+        background-color: rgba(white, 0.5);
+      }
+    }
+
+    &.active {
+      background-color: $tab-active-bg;
+      color: white;
+      transform: translateX(4px);
+      
+      &::before {
+        background-color: #004efa;
+      }
+    }
+  }
+
+  .admin-main {
+    flex: 1;
+    padding: 2rem;
+    background-color: $bg-lighter;
+    overflow-y: auto;
+    transition: all $transition-speed;
+    margin: 1rem 1rem 1rem 1.5rem;
+    @include card-shadow;
+    border-radius: 12px;
+    position: relative;
+    
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, $primary-button, color.adjust($primary-button, $lightness: 15%));
+      border-radius: 8px 8px 0 0;
+    }
+  }
+
+  .add-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background-color: $primary-button;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all $transition-speed;
+    box-shadow: 0 2px 8px rgba($primary-button, 0.4);
+
+    &:hover {
+      background-color: $primary-button-hover;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba($primary-button, 0.6);
+    }
+    
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba($primary-button, 0.4);
+    }
+      
+    svg {
+      stroke-width: 2px;
+      transition: transform $transition-speed;
+    }
+    
+    &:hover svg {
+      transform: rotate(90deg);
+    }
+  }
+}
+
+.admin-layout {
+  .admin-sidebar {
+    .nav-item {
+      &.active {
+        background-color: $tab-active-bg;
+        
+        &::before {
+          background-color: white;
+        }
+      }
+      
+      &:hover {
+        background-color: $tab-hover-bg;
+      }
+    }
+  }
+  
+  .admin-header {
+    .header-button {
+      &.primary {
+        background-color: $primary-button;
+        transition: all $transition-speed;
+        
+        &:hover {
+          background-color: $primary-button-hover;
+          transform: translateY(-2px);
+        }
+      }
+    }
+  }
+}
+
+// Animation for route transitions
+.route-transition-enter {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.route-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.route-transition-exit {
+  opacity: 1;
+}
+
+.route-transition-exit-active {
+  opacity: 0;
+  transition: opacity 300ms;
+}

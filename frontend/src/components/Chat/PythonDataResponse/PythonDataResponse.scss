@@ -1,0 +1,135 @@
+.python-data-response {
+  width: 100%;
+  margin: 1rem 0;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+  .response-content {
+    padding: 1rem;
+  }
+
+  .tab-navigation {
+    margin-bottom: 1rem;
+    
+    .tab-buttons {
+      display: flex;
+      border-bottom: 1px solid #e5e7eb;
+      
+      .tab-button {
+        padding: 0.5rem 1rem;
+        background: none;
+        border: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #6b7280;
+        cursor: pointer;
+        transition: all 0.2s;
+        
+        &:hover {
+          color: #4b5563;
+        }
+        
+        &.active {
+          color: #4f46e5;
+          border-bottom: 2px solid #4f46e5;
+        }
+      }
+    }
+  }
+
+  .data-container, .code-container {
+    width: 100%;
+  }
+
+  .table-header, .code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    
+    .table-info, .code-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      
+      .table-title, .code-title {
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: #374151;
+      }
+      
+      .table-count {
+        font-size: 0.8rem;
+        color: #6b7280;
+        background-color: #f3f4f6;
+        padding: 0.2rem 0.5rem;
+        border-radius: 1rem;
+      }
+    }
+    
+    .copy-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #6b7280;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.25rem;
+      border-radius: 0.25rem;
+      transition: all 0.2s;
+      
+      &:hover {
+        background-color: #f3f4f6;
+        color: #4b5563;
+      }
+    }
+  }
+
+  .table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      
+      th, td {
+        padding: 0.75rem 1rem;
+        text-align: left;
+        border-bottom: 1px solid #e5e7eb;
+      }
+      
+      th {
+        font-weight: 600;
+        color: #374151;
+        background-color: #f9fafb;
+      }
+      
+      td {
+        color: #4b5563;
+      }
+      
+      tr:last-child td {
+        border-bottom: none;
+      }
+      
+      tr:hover td {
+        background-color: #f9fafb;
+      }
+    }
+  }
+
+  .markdown-container {
+    width: 100%;
+    
+    pre {
+      margin: 0;
+      border-radius: 0.5rem;
+      overflow: auto;
+    }
+  }
+} 

@@ -1,0 +1,22 @@
+version: '3.9'
+services:
+  redis-stack:
+    image: redis/redis-stack:latest
+    container_name: redis-stack
+    ports:
+      - "6380:6379"     # Redis 默认端口
+      - "8001:8001"     # RedisInsight 可视化管理界面
+    environment:
+      - REDIS_ARGS=--save 300 10 --loglevel notice  --maxclients 10000
+    volumes:
+      - ./volumes/redis/data:/data # 持久化数据
+    restart: always      # 容器意外停止时自动重启
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 3G
+
+volumes:
+  redis-data:
+    driver: local

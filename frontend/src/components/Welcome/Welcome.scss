@@ -1,0 +1,162 @@
+@use '../../styles/variables' as *;
+
+// Variables
+$card-width: 300px;
+$card-gap: 2rem;
+$icon-size: 2rem;
+
+// Mixins
+@mixin card-base {
+  background: $bg-main;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px -1px $shadow-color;
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome-container {
+  height: 100%;
+  overflow-y: auto;
+  padding: 2rem;
+  background-color: $bg-primary;
+  margin-top: 1rem;
+
+  .welcome-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+
+    h1 {
+      font-size: 2.5rem;
+      color: $text-primary;
+      margin-bottom: 1rem;
+    }
+  }
+
+  .welcome-subtitle {
+    font-size: 1.25rem;
+    color: $text-secondary;
+    margin-bottom: 3rem;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+  }
+
+  .feature-card {
+    @include card-base;
+    transition: transform 0.2s;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+
+    h3 {
+      color: $text-primary;
+      margin-bottom: 0.75rem;
+    }
+
+    p {
+      color: $text-secondary;
+      line-height: 1.5;
+    }
+  }
+
+  .feature-icon {
+    background-color: $gray-100;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    @include flex-center;
+    margin: 0 auto 1rem;
+    color: $assistant;
+  }
+
+  .getting-started {
+    @include card-base;
+
+    h2 {
+      color: $text-primary;
+      margin-bottom: 2rem;
+    }
+  }
+
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: left;
+  }
+
+  .step {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .step-number {
+    background-color: $assistant;
+    color: $bg-main;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    @include flex-center;
+    font-weight: bold;
+    flex-shrink: 0;
+  }
+
+  .step-content {
+    flex: 1;
+
+    h4 {
+      color: $text-primary;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      color: $text-secondary;
+      line-height: 1.5;
+    }
+  }
+
+  .inline-icon {
+    vertical-align: middle;
+    margin: 0 0.25rem;
+  }
+}
+
+.welcome {
+  background-color: $bg-lighter;
+  
+  .welcome-header {
+    color: $text-primary;
+  }
+  
+  .welcome-subheader {
+    color: $text-secondary;
+  }
+  
+  .welcome-grid {
+    .welcome-card {
+      .card-icon {
+        color: $assistant;
+      }
+      
+      .card-content {
+        background-color: $gray-100;
+      }
+      
+      .card-button {
+        background-color: $assistant;
+      }
+    }
+  }
+}

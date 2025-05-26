@@ -1,0 +1,248 @@
+@use '../../styles/variables' as *;
+
+// Variables
+$shadow-color: rgba(0, 0, 0, 0.2);
+$modal-border-radius: 12px;
+$transition-duration: 0.25s;
+
+// Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleOut {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  to {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+}
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin button-base {
+  padding: 0.75rem 1.75rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: all 0.2s ease;
+  color: $primary-button-text;
+  position: relative;
+  overflow: hidden;
+  min-width: 100px; // Ensure buttons have decent width even with short text
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(100%);
+    transition: transform 0.2s ease;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    &::after {
+      transform: translateY(0);
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.modal-container {
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba($bg-lighter, 0.7);
+    backdrop-filter: blur(4px);
+    @include flex-center;
+    z-index: 1000;
+    opacity: 0; // Start with opacity 0
+    will-change: opacity; // Optimize for animation
+
+    &.modal-enter {
+      animation: fadeIn $transition-duration cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+      .modal-content {
+        animation: scaleIn $transition-duration cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+    }
+
+    &.modal-visible {
+      opacity: 1;
+
+      .modal-content {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    &.modal-exit {
+      animation: fadeOut $transition-duration cubic-bezier(0.7, 0, 0.84, 0) forwards;
+
+      .modal-content {
+        animation: scaleOut $transition-duration cubic-bezier(0.7, 0, 0.84, 0) forwards;
+      }
+    }
+
+    .modal-content {
+      background-color: $bg-main;
+      padding: 0;
+      border-radius: $modal-border-radius;
+      max-width: 500px;
+      width: 90%;
+      min-width: 300px; // Ensure minimum width for small screens
+      color: $text-primary;
+      box-shadow: 0 10px 30px $shadow-color, 0 0 0 1px rgba(255, 255, 255, 0.05);
+      overflow: hidden;
+      transform: scale(0.95); // Initial scale for animation
+      opacity: 0; // Initial opacity for animation
+      will-change: transform, opacity; // Optimize for animation
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid rgba($text-primary, 0.08);
+      position: relative;
+      min-height: 30px; // Ensure minimum height
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: rgba($text-primary, 0.6);
+      font-size: 1.5rem;
+      cursor: pointer;
+      height: 32px;
+      width: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      padding: 0;
+      margin: 0;
+      position: absolute;
+      right: 1.25rem;
+      top: 50%;
+      transform: translateY(-50%);
+
+      &:hover {
+        background-color: rgba($text-primary, 0.1);
+        color: $text-primary;
+        transform: translateY(-50%) rotate(90deg);
+      }
+    }
+
+    .modal-body {
+      padding: 1.5rem 2rem;
+      flex: 1;
+      min-height: 80px; // Ensure minimum height for body
+    }
+
+    .modal-title {
+      margin: 0;
+      color: $text-primary;
+      font-size: 1.5rem;
+      font-weight: 600;
+      padding-right: 2rem; // Ensure title doesn't overlap with close button
+    }
+
+    .modal-message {
+      margin: 0;
+      color: rgba($text-primary, 0.8);
+      line-height: 1.6;
+      font-size: 1rem;
+    }
+
+    .modal-footer {
+      padding: 1.5rem 2rem;
+      border-top: 1px solid rgba($text-primary, 0.08);
+    }
+
+    .modal-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      min-height: 30px; // Ensure minimum height
+    }
+
+    .modal-button {
+      @include button-base;
+
+      &.cancel {
+        background-color: $secondary-button;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+        &:hover {
+          background-color: $secondary-button-hover;
+        }
+      }
+
+      &.confirm {
+        background-color: $primary-button;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+        &:hover {
+          background-color: $primary-button-hover;
+        }
+      }
+    }
+  }
+}

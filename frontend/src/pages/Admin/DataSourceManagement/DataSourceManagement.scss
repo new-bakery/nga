@@ -1,0 +1,632 @@
+@use '../../../styles/variables' as *;
+@use "sass:color";
+
+// Variables
+$primary-color: #4361ee;
+$secondary-color: #3f8efc;
+$danger-color: #ef476f;
+$success-color: #06d6a0;
+$warning-color: #ffd166;
+$text-color: #2d3748;
+$light-text: #718096;
+$dark-bg: #2c3e50;
+$light-bg: #f8f9fa;
+$border-color: #e2e8f0;
+$hover-color: rgba(67, 97, 238, 0.05);
+$box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+$border-radius: 12px;
+$transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+// Mixins
+@mixin flex($direction: row, $justify: flex-start, $align: stretch) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+@mixin button-base {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: $transition;
+  @include flex(row, center, center);
+  gap: 8px;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  &:active {
+    transform: translateY(1px);
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  
+  svg {
+    stroke-width: 2px;
+  }
+}
+
+@mixin form-control {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  transition: $transition;
+  
+  &:hover {
+    border-color: color.scale($primary-color, $lightness: 20%);
+  }
+  
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
+  }
+}
+
+@mixin badge-base {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.datasource-management {
+  padding: 24px;
+  background: white;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  animation: fadeIn 0.3s ease;
+  max-width: 1400px;
+  margin: 0 auto;
+  
+  .page-header {
+    @include flex(row, space-between, center);
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid $border-color;
+    
+    h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: $text-color;
+      position: relative;
+      margin: 0;
+      
+      &:after {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        left: 0;
+        width: 40px;
+        height: 3px;
+        background: linear-gradient(to right, $primary-color, $secondary-color);
+        border-radius: 2px;
+      }
+    }
+    
+    .add-button {
+      @include button-base;
+      background: linear-gradient(135deg, $primary-color, $secondary-color);
+      color: white;
+      padding: 10px 18px;
+      font-weight: 600;
+      
+      &:hover {
+        background: linear-gradient(135deg, color.scale($primary-color, $lightness: -5%), color.scale($secondary-color, $lightness: -5%));
+      }
+    }
+  }
+  
+  .search-filter {
+    background: $light-bg;
+    padding: 20px;
+    border-radius: $border-radius;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    
+    form {
+      @include flex(row, flex-start, flex-end);
+      flex-wrap: wrap;
+      gap: 16px;
+      
+      .form-group {
+        @include flex(column, flex-start, flex-start);
+        gap: 6px;
+        min-width: 200px;
+        flex: 1;
+        
+        label {
+          font-size: 0.85rem;
+          font-weight: 600;
+          color: $light-text;
+        }
+        
+        .input-with-icon {
+          position: relative;
+          width: 100%;
+          
+          .input-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+          }
+          
+          input {
+            @include form-control;
+            padding-left: 36px;
+          }
+          
+          select {
+            @include form-control;
+            padding-left: 36px;
+            height: 41px;
+            background-color: white;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23718096' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 16px;
+            padding-right: 36px;
+          }
+        }
+        
+        input, select {
+          @include form-control;
+        }
+        
+        select {
+          height: 41px;
+          background-color: white;
+          appearance: none;
+          background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23718096' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+          background-repeat: no-repeat;
+          background-position: right 10px center;
+          background-size: 16px;
+          padding-right: 36px;
+        }
+      }
+      
+      .filter-buttons {
+        @include flex(row, flex-end, center);
+        gap: 12px;
+        margin-left: auto;
+        
+        .search-btn {
+          @include button-base;
+          background-color: $primary-color;
+          color: white;
+          min-width: 100px;
+          
+          &:hover {
+            background-color: color.scale($primary-color, $lightness: -5%);
+          }
+        }
+        
+        .reset-btn {
+          @include button-base;
+          background-color: transparent;
+          color: $light-text;
+          border: 1px solid $border-color;
+          
+          &:hover {
+            color: $text-color;
+            border-color: color.scale($border-color, $lightness: -10%);
+            background-color: rgba($border-color, 0.2);
+          }
+        }
+      }
+    }
+  }
+  
+  .datasources-table {
+    background-color: white;
+    border-radius: $border-radius;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    position: relative;
+    min-height: 300px;
+    
+    .loading {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      @include flex(row, center, center);
+      background-color: rgba(255, 255, 255, 0.8);
+      z-index: 10;
+      color: $light-text;
+      
+      &:before {
+        content: '';
+        display: block;
+        width: 40px;
+        height: 40px;
+        margin-right: 12px;
+        border: 3px solid rgba($primary-color, 0.1);
+        border-radius: 50%;
+        border-top-color: $primary-color;
+        animation: spin 1s ease-in-out infinite;
+      }
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      
+      th, td {
+        padding: 16px;
+        text-align: left;
+      }
+      
+      th {
+        background-color: $light-bg;
+        font-weight: 600;
+        color: $text-color;
+        font-size: 0.9rem;
+        border-bottom: 2px solid $border-color;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        transition: background-color 0.2s;
+        
+        &:hover {
+          background-color: color.scale($light-bg, $lightness: -2%);
+        }
+      }
+      
+      tbody tr {
+        transition: $transition;
+        border-bottom: 1px solid $border-color;
+        
+        &:hover {
+          background-color: $hover-color;
+          transform: translateY(-2px);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+          position: relative;
+          z-index: 2;
+        }
+        
+        &:last-child {
+          border-bottom: none;
+        }
+        
+        td {
+          border-bottom: 1px solid $border-color;
+          font-size: 0.95rem;
+          color: $text-color;
+          
+          &:last-child {
+            width: 100px;
+          }
+        }
+      }
+      
+      .status-badge {
+        @include badge-base;
+        
+        &.private {
+          background-color: rgba($warning-color, 0.15);
+          color: color.scale($warning-color, $lightness: -20%);
+        }
+        
+        &.public {
+          background-color: rgba($success-color, 0.15);
+          color: $success-color;
+        }
+      }
+      
+      .actions {
+        @include flex(row, flex-end, center);
+        gap: 8px;
+        
+        button {
+          width: 36px;
+          height: 36px;
+          border-radius: 8px;
+          border: none;
+          background-color: transparent;
+          @include flex(row, center, center);
+          cursor: pointer;
+          transition: $transition;
+          color: $light-text;
+          
+          &:hover {
+            transform: translateY(-2px);
+          }
+          
+          &.edit-button {
+            color: $light-text;
+            
+            &:hover {
+              background-color: rgba($primary-color, 0.1);
+              color: $primary-color;
+            }
+          }
+          
+          &.delete-button {
+            color: $light-text;
+            
+            &:hover {
+              background-color: rgba($danger-color, 0.1);
+              color: $danger-color;
+            }
+          }
+        }
+      }
+      
+      .no-data {
+        text-align: center;
+        color: $light-text;
+        padding: 40px;
+        font-style: italic;
+      }
+    }
+
+    .pagination {
+      @include flex(row, space-between, center);
+      padding: 16px;
+      border-top: 1px solid $border-color;
+      
+      .page-info {
+        color: $light-text;
+        font-size: 0.9rem;
+      }
+      
+      .page-controls {
+        @include flex(row, center, center);
+        gap: 8px;
+        
+        .page-btn {
+          @include flex(row, center, center);
+          width: 36px;
+          height: 36px;
+          border-radius: 8px;
+          border: 1px solid $border-color;
+          background: transparent;
+          cursor: pointer;
+          transition: $transition;
+          
+          &:hover:not(:disabled) {
+            border-color: $primary-color;
+            color: $primary-color;
+          }
+          
+          &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+          }
+        }
+        
+        .page-number {
+          @include flex(row, center, center);
+          width: 36px;
+          height: 36px;
+          border-radius: 8px;
+          background: transparent;
+          font-weight: 500;
+          
+          &.active {
+            background-color: rgba($primary-color, 0.1);
+            color: $primary-color;
+          }
+        }
+      }
+    }
+  }
+  
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    @include flex(row, center, center);
+    z-index: 1000;
+    padding: 20px;
+    
+    .datasource-modal, .delete-modal {
+      background-color: white;
+      border-radius: $border-radius;
+      width: 100%;
+      max-width: 500px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      animation: slideUp 0.3s ease;
+      
+      .modal-header {
+        @include flex(row, space-between, center);
+        padding: 20px 24px;
+        border-bottom: 1px solid $border-color;
+        
+        h3 {
+          font-size: 1.2rem;
+          font-weight: 600;
+          color: $text-color;
+          margin: 0;
+        }
+        
+        .close-btn {
+          width: 32px;
+          height: 32px;
+          border-radius: 8px;
+          border: none;
+          background-color: transparent;
+          @include flex(row, center, center);
+          cursor: pointer;
+          transition: $transition;
+          color: $light-text;
+          
+          &:hover {
+            background-color: rgba($danger-color, 0.1);
+            color: $danger-color;
+          }
+        }
+      }
+      
+      .modal-body {
+        padding: 24px;
+        
+        form {
+          @include flex(column, flex-start, stretch);
+          gap: 20px;
+          
+          .form-group {
+            @include flex(column, flex-start, flex-start);
+            gap: 8px;
+            width: 100%;
+            
+            label {
+              font-size: 0.9rem;
+              font-weight: 600;
+              color: $text-color;
+            }
+            
+            .input-with-icon {
+              position: relative;
+              width: 100%;
+              
+              .input-icon {
+                position: absolute;
+                left: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 1;
+              }
+              
+              input {
+                @include form-control;
+                padding-left: 36px;
+              }
+              
+              select {
+                @include form-control;
+                padding-left: 36px;
+                height: 41px;
+                background-color: white;
+                appearance: none;
+                background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23718096' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+                background-repeat: no-repeat;
+                background-position: right 10px center;
+                background-size: 16px;
+                padding-right: 36px;
+              }
+            }
+            
+            input, select {
+              @include form-control;
+            }
+            
+            select {
+              height: 41px;
+              background-color: white;
+              appearance: none;
+              background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23718096' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+              background-repeat: no-repeat;
+              background-position: right 10px center;
+              background-size: 16px;
+              padding-right: 36px;
+            }
+          }
+          
+          .form-actions {
+            @include flex(row, flex-end, center);
+            gap: 12px;
+            margin-top: 10px;
+            
+            .cancel-btn {
+              @include button-base;
+              background-color: transparent;
+              color: $light-text;
+              border: 1px solid $border-color;
+              
+              &:hover {
+                color: $text-color;
+                border-color: color.scale($border-color, $lightness: -10%);
+                background-color: rgba($border-color, 0.2);
+              }
+            }
+            
+            .submit-btn {
+              @include button-base;
+              background-color: $primary-color;
+              color: white;
+              min-width: 100px;
+              
+              &:hover {
+                background-color: color.scale($primary-color, $lightness: -5%);
+              }
+            }
+            
+            .delete-confirm-btn {
+              @include button-base;
+              background-color: $danger-color;
+              color: white;
+              min-width: 100px;
+              
+              &:hover {
+                background-color: color.scale($danger-color, $lightness: -5%);
+              }
+            }
+          }
+        }
+        
+        .delete-message {
+          @include flex(column, center, center);
+          gap: 16px;
+          text-align: center;
+          padding: 20px 0;
+          
+          .warning-icon {
+            margin-bottom: 10px;
+          }
+          
+          p {
+            color: $text-color;
+            font-size: 1rem;
+            line-height: 1.6;
+            max-width: 400px;
+            margin: 0 auto;
+          }
+        }
+      }
+    }
+  }
+  
+  .help-text {
+    color: $light-text;
+    font-size: 0.9rem;
+    margin-top: 8px;
+  }
+}

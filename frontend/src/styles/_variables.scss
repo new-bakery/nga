@@ -1,0 +1,68 @@
+// Button Colors
+$primary-button: #336fff;
+$primary-button-hover: #5d79fe;
+$primary-button-text: #ffffff;
+$secondary-button: #dc3545;
+$secondary-button-hover: #c82333;
+$secondary-button-text: #ffffff;
+$assistant: #10b981;
+
+// Text Colors
+$text-primary: #111827;
+$text-secondary: #374151;
+$text-dark-model: #ffffff;
+
+// Background Colors
+$bg-main: #ffffff;
+$bg-medium: #dedede;
+$bg-light: #40414f;
+$bg-lighter: #f7f7f7;
+$bg-bright: #ededed;
+$bg-primary: #f4f5f6;  
+
+// Gray Scale
+$gray-50: #f7f7f8;
+$gray-100: #f3f4f6;
+$gray-200: #e5e7eb;
+$gray-300: #d1d5db;
+$gray-400: #9ca3af;
+$gray-500: #6b7280;
+$gray-600: #4b5563;
+$gray-700: #374151;
+$gray-800: #1f2937;
+
+// Border Colors
+$border-color: #565869;
+$border-light: #e5e7eb;
+
+// Status Colors
+$status-active-bg: #d1fae5;
+$status-active-text: #065f46;
+$status-inactive-bg: #f3f4f6;
+$status-inactive-text: #374151;
+$status-error-bg: #fee2e2;
+$status-error-text: #991b1b;
+
+// Source Type Colors
+$source-system-bg: #dbeafe;
+$source-system-text: #1e40af;
+$source-user-bg: #fef3c7;
+$source-user-text: #92400e;
+
+// Utility Colors
+$shadow-color: rgba(0, 0, 0, 0.1);
+$overlay-color: rgba(0, 0, 0, 0.5);
+
+// Mixins
+@mixin table-action-button {
+    padding: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+  

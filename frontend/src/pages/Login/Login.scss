@@ -1,0 +1,355 @@
+@use '../../styles/variables' as *;
+@use "sass:color";
+
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin input-base {
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: rgba($bg-primary, 0.1);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.login-container {
+    @include flex-center;
+    height: 100vh;
+    background: linear-gradient(135deg, $bg-main, color.adjust($bg-main, $lightness: -15%));
+    position: relative;
+    overflow: hidden;
+
+    .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            transition: transform 0.3s ease;
+        }
+    }
+
+    .login-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('/login-background.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        opacity: 0.8;
+        z-index: 1;
+        filter: blur(8px);
+        transform: scale(1.1);
+        animation: pulseBackground 15s ease-in-out infinite;
+    }
+
+    .login-box {
+        position: relative;
+        z-index: 2;
+        background: rgba($bg-primary, 0.2);
+        padding: 4rem;
+        border-radius: 24px;
+        box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.1),
+            inset 0 0 32px rgba(255, 255, 255, 0.05);
+        width: 100%;
+        max-width: 500px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(16px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transform: translateY(0);
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+        &:hover {
+            transform: translateY(-5px) scale(1.01);
+            box-shadow: 
+                0 15px 45px rgba(0, 0, 0, 0.15),
+                inset 0 0 32px rgba(255, 255, 255, 0.08);
+        }
+
+        &.success {
+            transform: scale(1.05) translateY(-10px);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        h2 {
+            color: $text-primary;
+            padding-bottom: 3rem;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 600;
+            margin: 0;
+            background: linear-gradient(45deg, $text-primary, color.adjust($primary-button, $lightness:5%));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: titleGlow 2s ease-in-out infinite;
+        }
+
+        form {
+            width: 100%;
+            max-width: 400px;
+
+            &.loading {
+                opacity: 0.7;
+            }
+        }
+    }
+
+    .logo-container {
+        margin-bottom: 2rem;
+        animation: fadeInDown 0.6s ease;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+        position: relative;
+        width: 100%;
+
+        label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            color: $text-primary;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            opacity: 0.8;
+
+            i {
+                margin-right: 0.5rem;
+                font-size: 1rem;
+                color: $primary-button;
+            }
+        }
+
+        input {
+            @include input-base;
+            padding: 1rem 2.5rem;
+            color: $text-primary;
+            position: relative;
+            z-index: 1;
+            letter-spacing: 0.5px;
+
+            &:focus {
+                outline: none;
+                background-color: rgba($bg-primary, 0.2);
+                box-shadow: 0 0 0 3px rgba($primary-button, 0.2);
+            }
+        }
+
+        .field-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: $primary-button;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 2;
+
+            &:hover {
+                transform: translateY(-50%) scale(1.1);
+                color: color.adjust($primary-button, $lightness: 10%);
+            }
+
+            &.password-toggle {
+                opacity: 0.7;
+                &:hover {
+                    opacity: 1;
+                }
+            }
+        }
+
+        .input-border {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, $primary-button, color.adjust($primary-button, $lightness: 20%));
+            transition: width 0.3s ease;
+        }
+
+        &.focused {
+            label {
+                color: $primary-button;
+                transform: translateY(-5px);
+            }
+
+            .input-border {
+                width: 100%;
+            }
+        }
+
+        &.has-value {
+            label {
+                transform: translateY(-5px);
+            }
+        }
+    }
+    
+    .glow-button {
+        @include input-base;
+        margin-top: 2rem;   
+        background: linear-gradient(45deg, $primary-button, color.adjust($primary-button, $lightness: 15%));
+        color: $primary-button-text;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 48px;
+        font-weight: 500;
+        letter-spacing: 1px;
+        position: relative;
+        overflow: hidden;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 60%);
+            transform: scale(0);
+            transition: transform 0.5s ease-out;
+        }
+
+        i {
+            margin-left: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba($primary-button, 0.3);
+
+            &::before {
+                transform: scale(1) rotate(45deg);
+            }
+
+            i {
+                transform: translateX(5px);
+            }
+        }
+
+        &:active {
+            transform: translateY(1px);
+        }
+
+        &:disabled {
+            background: $bg-medium;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+
+            > div {
+                width: 8px;
+                height: 8px;
+                background-color: $primary-button-text;
+                border-radius: 50%;
+                animation: bounce 0.6s infinite;
+
+                &.bounce2 {
+                    animation-delay: 0.2s;
+                }
+
+                &.bounce3 {
+                    animation-delay: 0.4s;
+                }
+            }
+        }
+    }
+
+    .error-message {
+        color: $secondary-button;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        background-color: rgba($secondary-button, 0.1);
+        padding: 1rem;
+        border-radius: 12px;
+        border: 1px solid rgba($secondary-button, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        animation: shake 0.5s ease;
+        backdrop-filter: blur(8px);
+
+        i {
+            font-size: 1.1rem;
+        }
+    }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes rotateLogo {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+@keyframes titleGlow {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+
+@keyframes pulseBackground {
+    0%, 100% { transform: scale(1.1); }
+    50% { transform: scale(1.15); }
+}

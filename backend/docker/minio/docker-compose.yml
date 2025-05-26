@@ -1,0 +1,31 @@
+version: '3.7'
+
+services:
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    ports:
+      - "9000:9000"  # MinIO S3 API
+      - "9001:9001"  # MinIO 控制台
+    environment:
+      MINIO_ROOT_USER: admin       # 用户名
+      MINIO_ROOT_PASSWORD: password123 # 密码
+      MINIO_SSE_MASTER_KEY: "32characterlongencryptionkey1234" # 主密钥
+    volumes:
+      - ./volumes/minio/data:/data               # 数据存储路径
+      - ./volumes/minio/certs:/root/.minio/certs # 证书路径
+    command: server /data --console-address ":9001"
+    restart: always      # 容器意外停止时自动重启
+
+#  mc:
+#    image: minio/mc:latest
+#    container_name: mc
+#    entrypoint: >
+#      /bin/sh -c "
+#      sleep 5;
+#      mc alias set myminio https://minio:9000 admin password123;
+#      mc alias list;
+#      "
+#    depends_on:
+#      - minio
+#    restart: always      # 容器意外停止时自动重启

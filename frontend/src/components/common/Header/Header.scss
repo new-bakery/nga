@@ -1,0 +1,210 @@
+@use '../../../styles/variables' as *;
+
+// Variables
+$header-height: 60px;
+$shadow-color: rgba(0, 0, 0, 0.1);
+$dropdown-animation-duration: 0.2s;
+
+// Mixins
+@mixin flex-layout($direction: row) {
+    display: flex;
+    flex-direction: $direction;
+}
+
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+}
+
+@mixin button-base {
+    padding: 0.5rem;
+    color: $text-primary;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.main-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: $header-height;
+    background-color: $bg-main;
+    color: $text-primary;
+    @include flex-center;
+    padding: 0 20px;
+    z-index: 1000;
+    box-shadow: 0 2px 4px $shadow-color;
+
+    .header-content {
+        @include flex-center;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .header-left {
+        @include flex-center;
+        gap: 15px;
+
+        span {
+            background: linear-gradient(45deg, #111827, #99b7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+    }
+
+    .app-logo {
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+    }
+
+    .header-right {
+        @include flex-center;
+        gap: 20px;
+        
+        // User profile dropdown styles
+        .user-profile-container {
+            position: relative;
+        }
+        
+        .user-profile {
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all $dropdown-animation-duration ease;
+            
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.2);
+            }
+        }
+        
+        .dropdown-icon {
+            margin-left: 4px;
+            transition: transform $dropdown-animation-duration ease;
+            
+            &.rotate {
+                transform: rotate(180deg);
+            }
+        }
+        
+        .user-avatar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            margin-right: 8px;
+        }
+        
+        .user-name {
+            font-weight: 500;
+            margin-right: 4px;
+        }
+        
+        .user-dropdown {
+            position: absolute;
+            top: calc(100% + 5px);
+            right: 0;
+            min-width: 180px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            overflow: hidden;
+            animation: fadeIn $dropdown-animation-duration ease;
+        }
+        
+        .dropdown-arrow {
+            position: absolute;
+            top: -6px;
+            right: 20px;
+            width: 12px;
+            height: 12px;
+            background-color: white;
+            transform: rotate(45deg);
+        }
+        
+        .dropdown-content {
+            position: relative;
+            padding: 8px 0;
+        }
+        
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 10px 16px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            text-align: left;
+            transition: background-color $dropdown-animation-duration ease;
+            
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.05);
+            }
+            
+            svg {
+                margin-right: 10px;
+                color: #666;
+            }
+            
+            span {
+                color: #333;
+                font-weight: 500;
+            }
+        }
+    }
+
+    .user-info {
+        font-size: 14px;
+    }
+
+    .admin-button {
+        @include button-base;
+        background: none;
+        border: 1px solid $border-color;
+        @include flex-center;
+        justify-content: center;
+
+        &:hover {
+            background-color: $bg-medium;
+            border-color: $border-color;
+        }
+    }
+
+    .logout-button {
+        @include button-base;
+        color: $secondary-button-text;
+        padding: 0.5rem 1rem;
+        background-color: $secondary-button;
+        border: none;
+        font-size: 14px;
+
+        &:hover {
+            background-color: $secondary-button-hover;
+        }
+    }
+}
+
+// Dropdown animation
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

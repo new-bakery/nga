@@ -1,0 +1,50 @@
+@use './styles/variables' as *;
+
+// Variables
+$header-height: 60px;
+$header-bg: $bg-main;
+$panel-width: 260px;
+$collapsed-width: 50px;
+
+// Mixins
+@mixin flex-layout($direction: row) {
+  display: flex;
+  flex-direction: $direction;
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+}
+
+:root, textarea {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+}
+
+.app {
+  height: 100vh;
+  @include flex-layout(column);
+}
+
+// App container adjustments
+.app-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    padding-left: $panel-width;
+    transition: padding-left 0.3s ease;
+  
+    &.panel-collapsed {
+      padding-left: $collapsed-width;
+    }
+  }
+  
+
+main {
+  flex: 1;
+  overflow: hidden;
+}
+
