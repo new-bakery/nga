@@ -2,18 +2,29 @@
 @use "sass:color";
 
 :root {
-  --primary-color: #2563eb; /* Keep primary color */
-  --primary-button-hover: #3b82f6; /* Keep primary button hover color */
-  --background-dark: #f0f0f0; /* Updated to a light gray */
-  --background-medium: #e0e0e0; /* Updated to a lighter gray */
-  --background-light: #ffffff; /* Updated to white */
-  --background-lighter: #ffffff; /* Updated to white */
-  --border-color: #cccccc; /* Updated to a light border color */
-  --text-primary: #000000; /* Keep text primary color */
-  --text-light: #333333; /* Updated to a dark gray for better contrast */
-  --success-color: #059669; /* Keep success color */
-  --success-hover: #10b981; /* Keep success hover color */
-  
+  --primary-color: #2563eb;
+  /* Keep primary color */
+  --primary-button-hover: #3b82f6;
+  /* Keep primary button hover color */
+  --background-dark: #f0f0f0;
+  /* Updated to a light gray */
+  --background-medium: #e0e0e0;
+  /* Updated to a lighter gray */
+  --background-light: #ffffff;
+  /* Updated to white */
+  --background-lighter: #ffffff;
+  /* Updated to white */
+  --border-color: #cccccc;
+  /* Updated to a light border color */
+  --text-primary: #000000;
+  /* Keep text primary color */
+  --text-light: #333333;
+  /* Updated to a dark gray for better contrast */
+  --success-color: #059669;
+  /* Keep success color */
+  --success-hover: #10b981;
+  /* Keep success hover color */
+
   /* Adding new design variables */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -83,6 +94,7 @@ $success-hover: #10b981;
     transform: scale(0, 0);
     opacity: 0.5;
   }
+
   100% {
     transform: scale(100, 100);
     opacity: 0;
@@ -94,6 +106,7 @@ $success-hover: #10b981;
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -101,8 +114,13 @@ $success-hover: #10b981;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 /* Fixed dimensions for the modal */
@@ -134,6 +152,7 @@ $success-hover: #10b981;
     transform: translateY(0);
     animation: slideIn 0.4s ease-out;
     overflow: hidden;
+    /* Keep hidden for modal border radius */
   }
 
   /* Fixed header height */
@@ -213,11 +232,38 @@ $success-hover: #10b981;
   }
 
   .step-content {
-    height: 100%;
+    flex: 1;
     display: flex;
     flex-direction: column;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     animation: fadeIn 0.3s ease-out;
+    /* Enable smooth scrolling */
+    scroll-behavior: smooth;
+    /* Improve scrollbar appearance */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+    /* Ensure proper min-height for flex child */
+    min-height: 0;
+    /* Add padding to prevent content from being cut off */
+    padding-bottom: 1rem;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 3px;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.3);
+      }
+    }
   }
 
   .source-type-grid {
@@ -246,7 +292,7 @@ $success-hover: #10b981;
       transform: translateY(-4px);
       box-shadow: var(--shadow-md);
       border-color: $primary-color;
-      
+
       .source-type-icon {
         transform: scale(1.1);
       }
@@ -255,7 +301,7 @@ $success-hover: #10b981;
     &.selected {
       border-color: var(--primary-color);
       background: rgba($primary-color, 0.05);
-      
+
       &:before {
         content: '';
         position: absolute;
@@ -266,7 +312,7 @@ $success-hover: #10b981;
         height: 30px;
         clip-path: polygon(0 0, 100% 0, 100% 100%);
       }
-      
+
       &:after {
         content: '✓';
         position: absolute;
@@ -326,6 +372,8 @@ $success-hover: #10b981;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    /* Ensure the form can expand as needed */
+    flex-shrink: 0;
   }
 
   .form-group {
@@ -427,7 +475,7 @@ $success-hover: #10b981;
     textarea {
       transition: var(--transition-base);
       border-radius: var(--radius-md);
-      
+
       &:focus {
         box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
       }
@@ -466,11 +514,15 @@ $success-hover: #10b981;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
+    min-width: 200px;
+    max-width: 300px;
     width: 50%;
     transition: var(--transition-base);
     box-shadow: var(--shadow-sm);
     position: relative;
     overflow: hidden;
+    /* Prevent size changes during animations */
+    flex-shrink: 0;
 
     &:hover:not(:disabled) {
       background: $primary-button-hover;
@@ -513,7 +565,7 @@ $success-hover: #10b981;
     min-height: min-content;
     transition: var(--transition-base);
     box-shadow: var(--shadow-sm);
-    
+
     &:hover {
       box-shadow: var(--shadow-md);
     }
@@ -973,7 +1025,7 @@ $success-hover: #10b981;
     &::-webkit-scrollbar-thumb {
       background: $border-color;
       border-radius: 4px;
-      
+
       &:hover {
         background: color.adjust($border-color, $lightness: 10%);
       }
@@ -1009,7 +1061,7 @@ $success-hover: #10b981;
           color: $text-primary;
           cursor: pointer;
           transition: color 0.2s ease;
-          
+
           &:hover {
             color: $primary-color;
           }
@@ -1042,8 +1094,8 @@ $success-hover: #10b981;
             border-color: $primary-color;
             box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
             width: 300px;
-            
-            & + svg {
+
+            &+svg {
               color: $primary-color;
             }
           }
@@ -1106,7 +1158,7 @@ $success-hover: #10b981;
           cursor: pointer;
           accent-color: $primary-color;
           transition: all 0.2s ease;
-          
+
           &:checked {
             animation: pulse 0.3s ease-in-out;
           }
@@ -1368,7 +1420,8 @@ $success-hover: #10b981;
         gap: 0.25rem;
       }
 
-      input, textarea {
+      input,
+      textarea {
         padding: 0.75rem;
         border: 1px solid $border-color;
         border-radius: 4px;
@@ -1397,7 +1450,7 @@ $success-hover: #10b981;
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        
+
         &:after {
           content: '';
           height: 1px;
@@ -1420,7 +1473,7 @@ $success-hover: #10b981;
           border: 1px solid $border-color;
           border-radius: var(--radius-md);
           transition: var(--transition-base);
-          
+
           &:hover {
             border-color: $primary-color;
             transform: translateX(5px);
@@ -1488,7 +1541,8 @@ $success-hover: #10b981;
       }
     }
 
-    .remove-button, .add-button {
+    .remove-button,
+    .add-button {
       // ... existing styles ...
     }
   }
@@ -1544,7 +1598,7 @@ $success-hover: #10b981;
       margin-bottom: 10px;
       display: flex;
       align-items: center;
-      
+
       &:after {
         content: '';
         height: 1px;
@@ -1676,13 +1730,22 @@ $success-hover: #10b981;
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
 
 @keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }

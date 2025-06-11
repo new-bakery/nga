@@ -4,12 +4,12 @@ import { useDropzone } from 'react-dropzone';
 import { DATA_SOURCE_TYPES } from '../../../../constants/dataSources';
 import { MOCK_SCHEMA_DATA } from '../../../../constants/mockSchemaData';
 import './NewSourceWizard.scss';
-import ReactFlow, { 
-  Background, 
-  Controls, 
-  Handle, 
+import ReactFlow, {
+  Background,
+  Controls,
+  Handle,
   Position,
-  MarkerType 
+  MarkerType
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import { dataSourcesService } from '../../../../services/dataSources';
@@ -42,7 +42,7 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
   const [showRelationshipInfo, setShowRelationshipInfo] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
   const [generatingAnnotations, setGeneratingAnnotations] = useState({});
-  
+
   // Add these state variables at the component level
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTables, setSelectedTables] = useState(new Set());
@@ -51,13 +51,13 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
 
   // Add refs for animations
   const modalRef = useRef(null);
-  
+
   // Animation variants for framer-motion
   const fadeIn = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { duration: 0.3 } }
   };
-  
+
   const slideUp = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 30 } }
@@ -219,7 +219,7 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
   const handleUpdateTable = (tableId, updates) => {
     setSourceConfig(prev => ({
       ...prev,
-      tables: prev.tables.map(table => 
+      tables: prev.tables.map(table =>
         table.id === tableId ? { ...table, ...updates } : table
       )
     }));
@@ -235,13 +235,13 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
   const handleRemoveColumn = (tableId, columnId) => {
     setSourceConfig(prev => ({
       ...prev,
-      tables: prev.tables.map(table => 
+      tables: prev.tables.map(table =>
         table.id === tableId ? {
           ...table,
           columns: table.columns.filter(col => col.id !== columnId)
         } : table
       ),
-      relationships: prev.relationships.filter(rel => 
+      relationships: prev.relationships.filter(rel =>
         !(rel.from.tableId === tableId && rel.from.columnId === columnId) &&
         !(rel.to.tableId === tableId && rel.to.columnId === columnId)
       )
@@ -251,7 +251,7 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
   const handleColumnDescriptionChange = useCallback((tableId, columnId, newDescription) => {
     setSourceConfig(prev => ({
       ...prev,
-      tables: prev.tables.map(table => 
+      tables: prev.tables.map(table =>
         table.id === tableId ? {
           ...table,
           columns: table.columns.map(col =>
@@ -436,17 +436,17 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
 
   const renderSchemaStep = () => {
     // Filter tables based on search term
-    const filteredTables = sourceConfig.tables?.filter(table => 
+    const filteredTables = sourceConfig.tables?.filter(table =>
       table.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (table.description?.[0]?.text || '').toLowerCase().includes(searchTerm.toLowerCase())
     ) || [];
 
-    const allTablesSelected = sourceConfig.tables?.length > 0 && 
+    const allTablesSelected = sourceConfig.tables?.length > 0 &&
       selectedTables.size === sourceConfig.tables.length;
 
     return (
       <div className="step-content">
-        <motion.div 
+        <motion.div
           className="schema-header"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -471,7 +471,7 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
                 onChange={(e) => debouncedSearch(e.target.value)}
               />
             </div>
-            <motion.div 
+            <motion.div
               className="table-stats"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -484,7 +484,7 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
 
         <div className="schema-container">
           {isLoadingSchema ? (
-            <motion.div 
+            <motion.div
               className="loading-state"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -493,7 +493,7 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
               Loading schema...
             </motion.div>
           ) : sourceConfig.schemaError ? (
-            <motion.div 
+            <motion.div
               className="error-state"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -503,7 +503,7 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
               <p>{sourceConfig.schemaError}</p>
             </motion.div>
           ) : filteredTables.length === 0 ? (
-            <motion.div 
+            <motion.div
               className="empty-state"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -513,8 +513,8 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
           ) : (
             <div className="tables-grid">
               {filteredTables.map((table, index) => (
-                <motion.div 
-                  key={table.id} 
+                <motion.div
+                  key={table.id}
                   className={`table-card ${selectedTables.has(table.id) ? 'selected' : ''}`}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -555,8 +555,8 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                       >
-                        {expandedTables.has(table.id) ? 
-                          <ChevronUp size={16} /> : 
+                        {expandedTables.has(table.id) ?
+                          <ChevronUp size={16} /> :
                           <ChevronDown size={16} />
                         }
                       </motion.button>
@@ -572,7 +572,7 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
                   </div>
                   <AnimatePresence>
                     {expandedTables.has(table.id) && (
-                      <motion.div 
+                      <motion.div
                         className="columns-list"
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
@@ -580,8 +580,8 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
                         transition={{ duration: 0.3 }}
                       >
                         {table.columns.map((column, colIndex) => (
-                          <motion.div 
-                            key={column.id} 
+                          <motion.div
+                            key={column.id}
                             className="column-item"
                             initial={{ opacity: 0, x: -10 }}
                             animate={{ opacity: 1, x: 0 }}
@@ -626,7 +626,7 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
         {Object.entries(sourceTypeDetails.connection_info).map(([fieldName, fieldInfo]) => {
           const value = sourceConfig.connection[fieldName] || fieldInfo.default || '';
           const error = validationErrors[fieldName];
-          
+
           if (fieldInfo.file_uploader) {
             return (
               <div key={fieldName} className={`form-group ${error ? 'has-error' : ''}`}>
@@ -640,7 +640,7 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
                   )}
                   {fieldInfo.required && <span className="required-indicator">*</span>}
                 </div>
-                <FileUploader 
+                <FileUploader
                   fieldInfo={fieldInfo}
                   onFilesUploaded={(fileObjects) => {
                     handleConnectionFieldChange('file_objects', fileObjects);
@@ -727,26 +727,26 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
 
   const renderReviewStep = () => {
     const selectedTablesList = Array.from(selectedTables);
-    const selectedTablesData = sourceConfig.tables?.filter(table => 
+    const selectedTablesData = sourceConfig.tables?.filter(table =>
       selectedTables.has(table.id)
     ) || [];
 
     return (
       <div className="step-content">
-        <motion.div 
+        <motion.div
           className="review-header"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
         >
           <h3>Review Configuration</h3>
         </motion.div>
-        <motion.div 
+        <motion.div
           className="review-form"
           variants={fadeIn}
           initial="hidden"
           animate="visible"
         >
-          <motion.div 
+          <motion.div
             className="form-group"
             variants={slideUp}
             initial="hidden"
@@ -766,7 +766,7 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
               disabled={isCreatingSource}
             />
             {sourceNameError && (
-              <motion.div 
+              <motion.div
                 className="error-message"
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
@@ -778,7 +778,7 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
             )}
           </motion.div>
 
-          <motion.div 
+          <motion.div
             className="form-group"
             variants={slideUp}
             initial="hidden"
@@ -797,8 +797,8 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
               disabled={isCreatingSource}
             />
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             className="selected-tables-section"
             variants={slideUp}
             initial="hidden"
@@ -808,8 +808,8 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
             <h4>Selected Tables ({selectedTablesList.length})</h4>
             <div className="selected-tables-list">
               {selectedTablesData.map((table, index) => (
-                <motion.div 
-                  key={table.id} 
+                <motion.div
+                  key={table.id}
                   className="selected-table-item"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -836,6 +836,7 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
       <AnimatePresence mode="wait">
         <motion.div
           key={currentStep}
+          className="step-content"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -20 }}
@@ -845,8 +846,8 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
             switch (currentStep) {
               case STEPS.SELECT_TYPE:
                 return (
-                  <div className="step-content">
-                    <motion.h3 
+                  <>
+                    <motion.h3
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.1 }}
@@ -858,8 +859,8 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
                         <motion.button
                           key={type.name}
                           className={`source-type-card ${sourceConfig.type === type.name ? 'selected' : ''}`}
-                          onClick={() => setSourceConfig(prev => ({ 
-                            ...prev, 
+                          onClick={() => setSourceConfig(prev => ({
+                            ...prev,
                             type: type.name,
                             connection: {} // Reset connection when changing type
                           }))}
@@ -869,8 +870,8 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
                           whileHover={{ scale: 1.03 }}
                           whileTap={{ scale: 0.98 }}
                         >
-                          <img 
-                            src={`/source-icons/${type.display_info.icon}`} 
+                          <img
+                            src={`/source-icons/${type.display_info.icon}`}
                             alt={type.display_info.display_name}
                             className="source-type-icon"
                           />
@@ -878,13 +879,13 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
                         </motion.button>
                       ))}
                     </div>
-                  </div>
+                  </>
                 );
 
               case STEPS.CONFIGURE_SOURCE:
                 return (
-                  <div className="step-content">
-                    <motion.h3 
+                  <>
+                    <motion.h3
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.1 }}
@@ -892,15 +893,15 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
                       Configure Connection
                     </motion.h3>
                     {renderConnectionForm()}
-                    <motion.button 
+                    <motion.button
                       className="test-connection-button"
                       onClick={handleTestConnection}
                       disabled={isTestingConnection}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.3 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      transition={{ delay: 0.3, scale: { type: "spring", stiffness: 300, damping: 30 } }}
                     >
                       {isTestingConnection ? (
                         <span>Testing...</span>
@@ -912,7 +913,7 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
                         'Test Connection'
                       )}
                     </motion.button>
-                  </div>
+                  </>
                 );
 
               case STEPS.CONFIGURE_SCHEMA:
@@ -950,7 +951,7 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
 
   return (
     <div className="new-source-wizard">
-      <motion.div 
+      <motion.div
         className="wizard-modal"
         ref={modalRef}
         initial={{ opacity: 0, scale: 0.9 }}
@@ -972,8 +973,8 @@ function NewSourceWizard({ selectedType, onClose, onCreateSource, initialData, i
               </motion.div>
             ))}
           </div>
-          <motion.button 
-            className="close-button" 
+          <motion.button
+            className="close-button"
             onClick={onClose}
             whileHover={{ rotate: 90, scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
@@ -1121,14 +1122,14 @@ const FileUploader = ({ fieldInfo, onFilesUploaded, disabled = false }) => {
 
   return (
     <div className="file-uploader">
-      <motion.div 
-        {...getRootProps()} 
+      <motion.div
+        {...getRootProps()}
         className={`dropzone ${isDragActive ? 'active' : ''}`}
         whileHover={{ scale: 1.01 }}
         whileTap={{ scale: 0.99 }}
       >
         <input {...getInputProps()} />
-        <motion.div 
+        <motion.div
           initial={{ y: 0 }}
           animate={{ y: isDragActive ? -10 : 0 }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
@@ -1141,7 +1142,7 @@ const FileUploader = ({ fieldInfo, onFilesUploaded, disabled = false }) => {
 
       <AnimatePresence>
         {uploadedFileObjects.length > 0 && (
-          <motion.div 
+          <motion.div
             className="uploaded-files-list"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
@@ -1149,8 +1150,8 @@ const FileUploader = ({ fieldInfo, onFilesUploaded, disabled = false }) => {
           >
             <h4>Uploaded Files:</h4>
             {uploadedFileObjects.map((file, index) => (
-              <motion.div 
-                key={index} 
+              <motion.div
+                key={index}
                 className="file-item uploaded"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -1164,7 +1165,7 @@ const FileUploader = ({ fieldInfo, onFilesUploaded, disabled = false }) => {
                     Uploaded
                   </span>
                 </div>
-                <motion.button 
+                <motion.button
                   className="remove-button"
                   onClick={() => removeUploadedFile(index)}
                   disabled={disabled}
@@ -1181,7 +1182,7 @@ const FileUploader = ({ fieldInfo, onFilesUploaded, disabled = false }) => {
 
       <AnimatePresence>
         {uploadedFiles.length > 0 && (
-          <motion.div 
+          <motion.div
             className="selected-files-list"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
@@ -1189,8 +1190,8 @@ const FileUploader = ({ fieldInfo, onFilesUploaded, disabled = false }) => {
           >
             <h4>Selected Files:</h4>
             {uploadedFiles.map((file, index) => (
-              <motion.div 
-                key={index} 
+              <motion.div
+                key={index}
                 className="file-item pending"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -1201,7 +1202,7 @@ const FileUploader = ({ fieldInfo, onFilesUploaded, disabled = false }) => {
                   <span className="file-name">{file.name}</span>
                   <span className="file-size">{(file.size / 1024).toFixed(1)} KB</span>
                 </div>
-                <motion.button 
+                <motion.button
                   className="remove-button"
                   onClick={() => removeSelectedFile(index)}
                   disabled={isUploading}
@@ -1212,7 +1213,7 @@ const FileUploader = ({ fieldInfo, onFilesUploaded, disabled = false }) => {
                 </motion.button>
               </motion.div>
             ))}
-            <motion.button 
+            <motion.button
               className="upload-button"
               onClick={handleUpload}
               disabled={isUploading || disabled}
@@ -1236,7 +1237,7 @@ const FileUploader = ({ fieldInfo, onFilesUploaded, disabled = false }) => {
       </AnimatePresence>
 
       {uploadError && (
-        <motion.div 
+        <motion.div
           className="error-message"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
